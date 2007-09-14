@@ -1,24 +1,18 @@
-%define name     xqf
-%define version  1.0.5
-%define release  %mkrel 1
-%define title       A network game browser
-%define longtitle   A network game browser
-
-Name:           %{name}
-Version:        %{version}
-Release:        %{release}
-Summary:        A network game browser
-License:        GPL
+Summary:	A network game browser
+Name:		xqf
+Version:	1.0.5
+Release:	%mkrel 2
+License:	GPLv2+
 Group:          Games/Other
+URL:		http://www.linuxgames.com/xqf
 Source:         http://prdownloads.sourceforge.net/xqf/%{name}-%{version}.tar.bz2
-URL:            http://www.linuxgames.com/xqf
-Requires:       qstat >= 2.5c-4mdk
-Requires:       gzip
-Requires:       wget
-BuildRequires:  libgdk-pixbuf-devel
-BuildRequires:  desktop-file-utils
-BuildRequires:  perl-XML-Parser
-Buildroot:      %{_tmppath}/%{name}-%{version}
+Requires:	qstat >= 2.5c-4mdk
+BuildRequires:	desktop-file-utils
+BuildRequires:	perl(XML::Parser)
+BuildRequires:	libbzip2-devel
+BuildRequires:	libgeoip-devel
+BuildRequires:	libgtk+2-devel
+Buildroot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 XQF is a network game browser (e.g. Quake, Sin, etc.). It helps you
@@ -30,26 +24,34 @@ or that has a buddy.
 %setup -q
 
 %build
-%configure --with-qstat=%_bindir/qstat-quake
+sed -i 's/_32x32.png//g;' %{name}.desktop.in
+%configure2_5x \
+	--with-qstat=%{_bindir}/qstat-quake \
+	--disable-gtk \
+	--enable-gtk2 \
+	--enable-bzip2 \
+	--enable-geoip
+	
 %make
 
 %install
 rm -rf %{buildroot}
-%makeinstall
+%makeinstall_std
 
 # menu entry
-desktop-file-install --vendor="" \
+desktop-file-install \
     --remove-category="Application" \
+    --remove-category="X-SuSE-Core-Game" \
     --add-category="ArcadeGame" \
-    --dir %{buildroot}%{_datadir}/applications \
-    %{buildroot}%{_datadir}/applications/*
+    --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
 
-#Menu icons
-install -D -m 644 %{buildroot}%{_datadir}/pixmaps/%{name}_22x22.png %{buildroot}%{_miconsdir}/%{name}.png
-install -D -m 644 %{buildroot}%{_datadir}/pixmaps/%{name}_32x32.png %{buildroot}%{_iconsdir}/%{name}.png
-install -D -m 644 %{buildroot}%{_datadir}/pixmaps/%{name}_48x48.png %{buildroot}%{_liconsdir}/%{name}.png
+mkdir -p %{buildroot}%{_iconsdir}/hicolor/{22x22,32x32,48x48}/apps/
+mv -f %{buildroot}%{_datadir}/pixmaps/%{name}_22x22.png %{buildroot}%{_iconsdir}/hicolor/22x22/apps/%{name}.png
+mv -f %{buildroot}%{_datadir}/pixmaps/%{name}_32x32.png %{buildroot}%{_iconsdir}/hicolor/32x32/apps/%{name}.png
+mv -f %{buildroot}%{_datadir}/pixmaps/%{name}_48x48.png %{buildroot}%{_iconsdir}/hicolor/48x48/apps/%{name}.png
+rm -rf %{buildroot}%{_datadir}/pixmaps
 
-%{find_lang} %{name}
+%find_lang %{name}
 
 %post
 %{update_menus}
@@ -64,13 +66,9 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc AUTHORS BUGS COPYING ChangeLog NEWS README TODO
 %doc docs/*html docs/PreLaunch.example
+%dir %{_datadir}/%{name}
 %{_bindir}/*
-%{_mandir}/man6/xqf.*
-%{_datadir}/xqf
-%{_datadir}/pixmaps/*
-%{_miconsdir}/%{name}.png
-%{_iconsdir}/%{name}.png
-%{_liconsdir}/%{name}.png
+%{_mandir}/man?/*
+%{_datadir}/%{name}/*
+%{_iconsdir}/hicolor/*/apps/*.png
 %{_datadir}/applications/%{name}.desktop
-
-
