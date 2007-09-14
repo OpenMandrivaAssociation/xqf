@@ -1,7 +1,7 @@
 Summary:	A network game browser
 Name:		xqf
 Version:	1.0.5
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPLv2+
 Group:          Games/Other
 URL:		http://www.linuxgames.com/xqf
@@ -56,6 +56,7 @@ rm -rf %{buildroot}%{_datadir}/pixmaps
 %post
 %{update_menus}
 %update_icon_cache hicolor
+
 %postun
 %{clean_menus}
 %clean_icon_cache hicolor
