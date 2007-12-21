@@ -12,6 +12,7 @@ BuildRequires:	perl(XML::Parser)
 BuildRequires:	libbzip2-devel
 BuildRequires:	libgeoip-devel
 BuildRequires:	libgtk+2-devel
+Buildroot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 XQF is a network game browser (e.g. Quake, Sin, etc.). It helps you
