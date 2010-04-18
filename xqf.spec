@@ -1,11 +1,12 @@
 Summary:	A network game browser
 Name:		xqf
 Version:	1.0.5
-Release:	%mkrel 8
+Release:	%mkrel 9
 License:	GPLv2+
 Group:          Games/Other
 URL:		http://www.linuxgames.com/xqf
 Source:         http://prdownloads.sourceforge.net/xqf/%{name}-%{version}.tar.bz2
+Patch0:		xqf-1.0.5-do-not-hang-after-game-launch.patch
 Requires:	qstat >= 2.5c-4mdk
 BuildRequires:	desktop-file-utils
 BuildRequires:	perl(XML::Parser)
@@ -22,6 +23,7 @@ or that has a buddy.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 sed -i 's/_32x32.png//g;' %{name}.desktop.in
@@ -31,7 +33,7 @@ sed -i 's/_32x32.png//g;' %{name}.desktop.in
 	--enable-gtk2 \
 	--enable-bzip2 \
 	--enable-geoip
-	
+
 %make
 
 %install
@@ -42,6 +44,7 @@ rm -rf %{buildroot}
 desktop-file-install \
     --remove-category="Application" \
     --remove-category="X-SuSE-Core-Game" \
+    --remove-category="ActionGame" \
     --add-category="ArcadeGame" \
     --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
 
