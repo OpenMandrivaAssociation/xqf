@@ -1,0 +1,20 @@
+diff -Naur xqf-1.0.5//src/launch.c xqf-1.0.5.tpg//src/launch.c
+--- xqf-1.0.5//src/launch.c	2005-10-07 12:55:15.000000000 +0000
++++ xqf-1.0.5.tpg//src/launch.c	2010-04-18 10:59:41.000000000 +0000
+@@ -168,12 +168,15 @@
+ 
+   res = read (fd, cl->buffer + cl->pos, CLIENT_ERROR_BUFFER - 1 - cl->pos);
+ 
+-  if (res <= 0) {	/* read error or EOF */
++  if (res < 0) {	/* read error or EOF */
+     if (errno == EAGAIN || errno == EWOULDBLOCK)
+       return;
+ 
+     client_detach (cl);
+     return;
++  } else if (res == 0) {
++    client_detach (cl);
++    return;
+   }
+ 
+   if (cl->pos + res == CLIENT_ERROR_BUFFER - 1) {
