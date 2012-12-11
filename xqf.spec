@@ -1,19 +1,20 @@
 Summary:	A network game browser
 Name:		xqf
 Version:	1.0.5
-Release:	%mkrel 10
+Release:	11
 License:	GPLv2+
-Group:          Games/Other
+Group:		Games/Other
 URL:		http://www.linuxgames.com/xqf
-Source:         http://prdownloads.sourceforge.net/xqf/%{name}-%{version}.tar.bz2
+Source:		http://prdownloads.sourceforge.net/xqf/%{name}-%{version}.tar.bz2
 Patch0:		xqf-1.0.5-do-not-hang-after-game-launch.patch
-Requires:	qstat >= 2.5c-4mdk
+Patch1:		xqf-1.0.5-underlink.patch
+Requires:	qstat
 BuildRequires:	desktop-file-utils
 BuildRequires:	perl(XML::Parser)
-BuildRequires:	libbzip2-devel
+BuildRequires:	bzip2-devel
 BuildRequires:	libgeoip-devel
-BuildRequires:	libgtk+2-devel
-Buildroot:	%{_tmppath}/%{name}-%{version}-buildroot
+BuildRequires:	pkgconfig(gdk-pixbuf-xlib-2.0)
+BuildRequires:	pkgconfig(gtk+-2.0)
 
 %description
 XQF is a network game browser (e.g. Quake, Sin, etc.). It helps you
@@ -24,6 +25,7 @@ or that has a buddy.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p0
 
 %build
 sed -i 's/_32x32.png//g;' %{name}.desktop.in
@@ -37,7 +39,6 @@ sed -i 's/_32x32.png//g;' %{name}.desktop.in
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 # menu entry
@@ -56,23 +57,7 @@ rm -rf %{buildroot}%{_datadir}/pixmaps
 
 %find_lang %{name}
 
-%if %mdkversion < 200900
-%post
-%{update_menus}
-%update_icon_cache hicolor
-%endif
-
-%if %mdkversion < 200900
-%postun
-%{clean_menus}
-%clean_icon_cache hicolor
-%endif
-
-%clean
-rm -rf %{buildroot}
-
 %files -f %{name}.lang
-%defattr(-,root,root)
 %doc AUTHORS BUGS ChangeLog NEWS README TODO
 %doc docs/*html docs/PreLaunch.example
 %dir %{_datadir}/%{name}
@@ -81,3 +66,5 @@ rm -rf %{buildroot}
 %{_datadir}/%{name}/*
 %{_iconsdir}/hicolor/*/apps/*.png
 %{_datadir}/applications/%{name}.desktop
+
+
