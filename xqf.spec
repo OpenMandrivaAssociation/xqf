@@ -1,7 +1,7 @@
 Summary:	A network game browser
 Name:		xqf
 Version:	1.0.5
-Release:	16
+Release:	12
 License:	GPLv2+
 Group:		Games/Other
 URL:		http://www.linuxgames.com/xqf
@@ -12,7 +12,7 @@ Requires:	qstat
 BuildRequires:	desktop-file-utils
 BuildRequires:	perl(XML::Parser)
 BuildRequires:	bzip2-devel
-BuildRequires:	libgeoip-devel
+BuildRequires:	geoip-devel
 BuildRequires:	pkgconfig(gdk-pixbuf-xlib-2.0)
 BuildRequires:	pkgconfig(gtk+-2.0)
 
