@@ -4,7 +4,7 @@ Version:	1.0.5
 Release:	13
 License:	GPLv2+
 Group:		Games/Other
-URL:		http://www.linuxgames.com/xqf
+URL:		https://www.linuxgames.com/xqf
 Source:		http://prdownloads.sourceforge.net/xqf/%{name}-%{version}.tar.bz2
 Patch0:		xqf-1.0.5-do-not-hang-after-game-launch.patch
 Patch1:		xqf-1.0.5-underlink.patch
