@@ -9,6 +9,11 @@ Source:		http://prdownloads.sourceforge.net/xqf/%{name}-%{version}.tar.bz2
 Patch0:		xqf-1.0.5-do-not-hang-after-game-launch.patch
 Patch1:		xqf-1.0.5-underlink.patch
 Requires:	qstat
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	desktop-file-utils
 BuildRequires:	perl(XML::Parser)
 BuildRequires:	bzip2-devel
